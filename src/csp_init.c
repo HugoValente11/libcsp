@@ -1,5 +1,3 @@
-
-
 #include <csp/interfaces/csp_if_lo.h>
 #include <csp/arch/csp_time.h>
 #include <csp/csp_id.h>
@@ -9,6 +7,8 @@
 #include "csp_port.h"
 #include "csp_rdp_queue.h"
 
+#include "csp_init.h"
+
 csp_conf_t csp_conf = {
 	.version = 2,
 	.hostname = "",
@@ -17,8 +17,8 @@ csp_conf_t csp_conf = {
 	.conn_dfl_so = CSP_O_NONE,
 	.dedup = CSP_DEDUP_OFF};
 
-void csp_init(void) {
-
+int32 CSP_Init(void)
+{
 	/* Validation of version */
 	if ((csp_conf.version == 0) || (csp_conf.version > 2)) {
 		csp_conf.version = 2;
@@ -39,8 +39,18 @@ void csp_init(void) {
 	/* Loopback */
 	csp_if_lo.netmask = csp_id_get_host_bits();
 	csp_iflist_add(&csp_if_lo);
+    /*
+     * Prints message to screen.
+     */
 
-}
+    CFE_ES_WriteToSysLog("[......................]");
+    CFE_ES_WriteToSysLog("[CSP LIB Initialized]");
+    CFE_ES_WriteToSysLog("[......................]");
+
+    return CFE_SUCCESS;
+
+} /* End CSP_Init */
+
 
 const csp_conf_t * csp_get_conf(void) {
 	return &csp_conf;

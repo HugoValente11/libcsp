@@ -1,4 +1,6 @@
-target_sources(csp PRIVATE
+target_include_directories(csp_lib PRIVATE ../include)
+
+target_sources(csp_lib PRIVATE
   csp_bridge.c
   csp_buffer.c
   csp_conn.c
@@ -23,7 +25,7 @@ target_sources(csp PRIVATE
   )
 
 if (CSP_HAVE_STDIO)
-  target_sources(csp PRIVATE csp_rtable_stdio.c)
+  target_sources(csp_lib PRIVATE csp_rtable_stdio.c)
 endif()
 
 add_subdirectory(arch)

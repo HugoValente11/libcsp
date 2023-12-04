@@ -1,4 +1,4 @@
-target_sources(csp PRIVATE
+target_sources(csp_lib PRIVATE
   csp_clock.c
   csp_hooks.c
   csp_queue.c
