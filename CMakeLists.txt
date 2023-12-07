@@ -115,7 +115,11 @@ configure_file(csp_autoconfig.h.in include/csp/autoconfig.h)
 add_cfe_app(csp_lib ${CSP_SOURCES} ${CSP_HEADERS})
 
 # Include directories for the CSP library
-target_include_directories(csp_lib PUBLIC include/csp ${CMAKE_CURRENT_SOURCE_DIR}/src)
+target_include_directories(csp_lib PUBLIC 
+    include
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_BINARY_DIR}/include
+)
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/include)
 
