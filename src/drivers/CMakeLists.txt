@@ -7,7 +7,7 @@ if(LIBSOCKETCAN_FOUND)
     ${LIBSOCKETCAN_INCLUDE_DIRS})
   target_link_libraries(driver_can PRIVATE
     ${LIBSOCKETCAN_LIBRARIES})
-  target_link_libraries(csp driver_can)
+  target_link_libraries(csp_lib driver_can)
   if(BUILD_SHARED_LIBS)
     set_property(TARGET driver_can PROPERTY POSITION_INDEPENDENT_CODE ON)
   endif()

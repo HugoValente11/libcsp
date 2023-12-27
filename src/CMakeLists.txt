@@ -1,5 +1,3 @@
-target_include_directories(csp_lib PRIVATE ../include)
-
 target_sources(csp_lib PRIVATE
   csp_bridge.c
   csp_buffer.c

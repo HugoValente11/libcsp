@@ -111,8 +111,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 
  
   # Create the CSP library as a cFE app
-  add_cfe_app(csp_lib src/csp_init.c)
-  # add_cfe_app(csp_lib ${CSP_SOURCES} ${CSP_HEADERS})
+  add_cfe_app(csp_lib ${CSP_SOURCES} ${CSP_HEADERS})
 
   if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND
     CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
@@ -156,29 +155,12 @@ target_include_directories(csp_lib
   PRIVATE ${csp_inc_src}
 )
 
-if(CSP_POSIX)
-  set(CSP_C_ARGS -Wshadow -Wcast-align -Wwrite-strings -Wno-unused-parameter)
-  set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-elseif(CSP_ZEPHYR)
-  set(CSP_C_ARGS -Wwrite-strings -Wno-unused-parameter)
-endif()
-target_compile_options(csp_lib PRIVATE ${CSP_C_ARGS})
+include_directories(${CMAKE_CURRENT_BINARY_DIR}/include)
 
-# target_link_libraries(csp_lib yaml)
+target_link_libraries(csp_lib yaml)
 
 # Add subdirectories if needed (e.g., for additional CSP components)
 add_subdirectory(src)
 # add_subdirectory(examples)
-
-if(${CSP_ENABLE_PYTHON3_BINDINGS})
-  find_package(Python3 COMPONENTS Development)
-  if(Python3_Development.Module_FOUND)
-    Python3_add_library(libcsp_py3 MODULE WITH_SOABI src/bindings/python/pycsp.c)
-    target_include_directories(libcsp_py3 PUBLIC ${csp_inc})
-    target_link_libraries(libcsp_py3 PUBLIC csp_lib)
-  else()
-    message(FATAL_ERROR "Python development module not found")
-  endif()
-endif()
 
 configure_file(csp_autoconfig.h.in include/csp/autoconfig.h)

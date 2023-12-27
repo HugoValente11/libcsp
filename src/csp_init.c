@@ -43,14 +43,38 @@ int32 CSP_Init(void)
      * Prints message to screen.
      */
 
-    CFE_ES_WriteToSysLog("[......................]");
-    CFE_ES_WriteToSysLog("[CSP LIB Initialized]");
-    CFE_ES_WriteToSysLog("[......................]");
+    csp_print("[......................]\n");
+    csp_print("[CSP LIB Initialized]\n");
+    csp_print("[......................]\n");
 
     return CFE_SUCCESS;
 
 } /* End CSP_Init */
 
+void csp_init(void) {
+
+	/* Validation of version */
+	if ((csp_conf.version == 0) || (csp_conf.version > 2)) {
+		csp_conf.version = 2;
+	}
+
+	/* Validation of dedup */
+	if (csp_conf.dedup > CSP_DEDUP_ALL) {
+		csp_conf.dedup = CSP_DEDUP_OFF;
+	}
+
+	csp_buffer_init();
+	csp_conn_init();
+	csp_qfifo_init();
+#if (CSP_USE_RDP)
+	csp_rdp_queue_init();
+#endif
+
+	/* Loopback */
+	csp_if_lo.netmask = csp_id_get_host_bits();
+	csp_iflist_add(&csp_if_lo);
+
+}
 
 const csp_conf_t * csp_get_conf(void) {
 	return &csp_conf;
